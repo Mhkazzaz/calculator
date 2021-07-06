@@ -1,14 +1,69 @@
-.App {
+* {
+    color: #F2F4F7;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+#container {
+    display: grid;
     width: 100vw;
     height: 100vh;
-    background-color: aqua;
-    display: flex;
+    background-color: #8DB7F1;
     justify-content: center;
-    align-items: center
+    align-content: center;
 }
 
-#centered {
-    width: 50vw;
-    height: 50%;
-    background-color: black;
+#calculator {
+    width: 22vw;
+    height: 55vh;
+    display: grid;
+    background-color: #171E1C;
+    padding: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: 
+    'result result result result'
+    'ac ac . .'
+    '. . . .'
+    '. . . .'
+    '. . . equal'
+    'zero zero . equal'
+}
+
+#result {
+    grid-area: result;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 2px;
+}
+
+button {
+    padding: 15px 32px;
+    border: 1px solid #171E1C
+}
+
+button:hover {
+    color: #171E1C;
+    border: 1px solid #C0C0C0
+}
+
+#ac {
+    grid-area: ac;
+    background-color: #D0203B;
+}
+
+#equal {
+    grid-area: equal;
+    background-color: #0A548F;
+}
+
+#zero {
+    grid-area: zero;
+}
+
+.operations {
+    background-color: #888b8b;
+}
+
+.numbers {
+    background-color: #595959;
 }
