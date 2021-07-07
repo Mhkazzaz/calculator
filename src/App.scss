@@ -4,6 +4,7 @@
     font-size: 1.1rem;
     font-weight: 500;
 }
+
 #container {
     display: grid;
     width: 100vw;
@@ -14,26 +15,46 @@
 }
 
 #calculator {
-    width: 22vw;
-    height: 55vh;
-    display: grid;
+    width: 300px;
+    height: auto;
     background-color: #171E1C;
     padding: 10px;
+}
+
+#operations-wrapper {
+    padding-right: 2px;
+    text-align: right;
+    // outline: 1px solid green;
+    word-wrap: break-word;
+
+}
+
+#formula {
+    // border: 1px solid red;
+    height: 20px;
+    opacity: 0;
+    font-size: 0.9rem;
+    color: rgb(255, 187, 0)
+}
+
+#result {
+    // border: 1px solid red;
+    font-size: 1.3rem;
+}
+
+
+#button-wrapper {
+    margin-top: 10px;
+    width: 300px;
+    height: 350px;
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas: 
-    'result result result result'
     'ac ac . .'
     '. . . .'
     '. . . .'
     '. . . equal'
     'zero zero . equal'
-}
-
-#result {
-    grid-area: result;
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 2px;
 }
 
 button {
