@@ -21,7 +21,7 @@
     padding: 10px;
 }
 
-#operations-wrapper {
+#screen {
     padding-right: 2px;
     text-align: right;
     // outline: 1px solid green;
@@ -30,15 +30,15 @@
 }
 
 #formula {
-    // border: 1px solid red;
-    height: 20px;
+    border: 1px solid red;
+    // height: 20px;
     opacity: 0;
     font-size: 0.9rem;
     color: rgb(255, 187, 0)
 }
 
 #result {
-    // border: 1px solid red;
+    border: 1px solid yellow;
     font-size: 1.3rem;
 }
 
@@ -81,7 +81,7 @@ button:hover {
     grid-area: zero;
 }
 
-.operations {
+.operators {
     background-color: #888b8b;
 }
 
