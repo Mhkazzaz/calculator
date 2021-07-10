@@ -1,151 +1,307 @@
+/* eslint-disable no-eval */
 import './App.scss';
 import { useState, useEffect } from 'react'
 
 function App() {
 
-  const [numbers, setNumbers] = useState("0")
   const [term, setTerm] = useState("0")
 
-  const formula = document.getElementById("formula")
+  const [formula, setFormula] = useState("0")
 
-  if (formula) {
-    formula.style.opacity = 1
-  }
+  const [equation, setEquation] = useState(false)
 
-  const addNumbers = (e) => {
 
-      // console.log(`target: ${e.target.className}`)
-      // console.log(`term: ${term}`)
-    const operatorsArr = ["+", "x", "/", "-"];
+  const formulaScreen = document.getElementById("formula")
 
-    if (term.length === 22) {
-      document.getElementById("result").innerHTML = ("DIGIT LIMIT MET")
-      setTimeout(function () {
-        document.getElementById("result").innerHTML = term
-      }, 500);
+  const operatorsArr = ["+", "*", "/", "-"];
+
+  const isTermOperator = operatorsArr.find(operator => operator === term)
+
+
+
+  const digitLimitMet = () => {
+
+      document.getElementById("term").innerHTML = ("DIGIT LIMIT MET")
+
+      setTimeout(function() {
+
+      document.getElementById("term").innerHTML = term
+
+    }, 500);
+
+}
+
+
+
+  const addDigits = (e) => {
+
+    if (formulaScreen) {
+
+     formulaScreen.style.opacity = 1
+
     }
 
-    else if (term === "0") {
-      document.getElementById("formula").style.opacity = 1
-      if (e.target.innerHTML === "0") {
-        setNumbers(numbers)
-        setTerm("0")
-      }
-      else if (e.target.innerHTML === ".") {
-        setNumbers(numbers + ".")
+    if (equation) {
+
+      if (e.target.id === "point") {
+
+        setFormula("0.")
         setTerm("0.")
-      }
-      else if (e.target.className === "numbers" && numbers === "0") {
-        setNumbers(e.target.innerHTML)
+
+      } else if (e.target.className === "numbers") {
+
+        setFormula(e.target.innerHTML)
         setTerm(e.target.innerHTML)
+
+      } else if (e.target.className === "operators") {
+
+        setFormula(term + e.target.innerHTML)
+        setTerm(e.target.innerHTML)
+
+      } else {
+
+        setTerm(0)
+        document.getElementById("formula").style.opacity = 0
+
       }
-      else if (e.target.className === "numbers") {
-        let numbersArr = [];
-        for (let i = 0; i < numbers.length; i++) {
-          numbersArr.push(numbers[i])
+
+      setEquation(!equation)
+
+    } else if (term === "0") {
+
+      document.getElementById("formula").style.opacity = 1
+
+      if (e.target.id === "point") {
+
+        setFormula(formula + ".")
+        setTerm(term + ".")
+
+      } else if (e.target.className === "numbers" && e.target.id !== "zero") {
+        
+        setFormula(e.target.innerHTML)
+        setTerm(e.target.innerHTML)
+
+      } else if (e.target.className === "operators") {
+
+        setFormula(formula + e.target.innerHTML)
+        setTerm(e.target.innerHTML)
+
+      } else {
+
+        setFormula(formula)
+        setTerm(term)
+
+      }
+
+
+    } else {
+
+      if (e.target.id === "point") {
+
+        let termArr = [];
+        for (let i = 0; i < term.length; i++) {
+          termArr.push(term[i])
         }
-        const mutableArr = [...numbersArr]
-        mutableArr[mutableArr.length -1] = e.target.innerHTML;
-        setNumbers(mutableArr.join(""))
-        setTerm(e.target.innerHTML)
+
+        const decimalPoint = (num) => num === '.';
+        if (!termArr.some(decimalPoint)) {
+
+          setFormula(formula + e.target.innerHTML)
+          setTerm(term + e.target.innerHTML)
+
+        } else {
+
+          setFormula(formula)
+          setTerm(term)
+
+        }
+
+      } else if (e.target.className === "numbers") {
+
+        if (term.length === 22) {
+
+          digitLimitMet();
+
+        } else if (isTermOperator) {
+
+          setFormula(formula + e.target.innerHTML)
+          setTerm(e.target.innerHTML)
+
+        } else {
+
+          setFormula(formula + e.target.innerHTML)
+          setTerm(term + e.target.innerHTML)
+
+        }    
+
+      } else if (e.target.className === "operators") {
+
+        let formulaArr = [];
+        for (let i = 0; i < formula.length; i++) {
+
+          formulaArr.push(formula[i])
+
+        }
+
+        let mutableArr = [...formulaArr]
+
+        if (isTermOperator) {
+
+          if (e.target.id === "minus") {
+
+            if (operatorsArr.find(operator => operator === (formulaArr[formulaArr.length - 2]))) {
+
+              setFormula(formula)
+              setTerm(term)
+
+            } else {
+
+              setFormula(formula + e.target.innerHTML)
+              setTerm(e.target.innerHTML)
+
+            }
+
+          } else {
+
+            if (operatorsArr.find(operator => operator === (formulaArr[formulaArr.length - 2]))) {
+
+              mutableArr.splice(-2, 2, e.target.innerHTML)
+              setFormula(mutableArr.join(""))
+              setTerm(e.target.innerHTML)
+
+            } else {
+
+              mutableArr[mutableArr.length - 1] = e.target.innerHTML
+
+              setFormula(mutableArr.join(""))
+              setTerm(e.target.innerHTML)
+
+            }
+
+          }
+
+
+
+        } else {
+
+          setFormula(formula + e.target.innerHTML)
+          setTerm(e.target.innerHTML)
+
+        }
+
+      } else {
+
+        setFormula(formula + e.target.innerHTML)
+        setTerm(term + e.target.innerHTML)
+
       }
 
-      else if (e.target.className === "operators") {
-        setNumbers(numbers + e.target.innerHTML)
-        setTerm(e.target.innerHTML)
-      }
-      // else {
-      //   setNumbers(numbers + e.target.innerHTML)
-      //   setTerm(term + e.target.innerHTML)
-      // }
-    }
-
-    else if (e.target.innerHTML === '.') {
-      let numbersArr = [];
-      for (let i = 0; i < term.length; i++) {
-        numbersArr.push(term[i])
-      }
-      const decimalPoint = (num) => num  === '.';
-      if (!numbersArr.some(decimalPoint)) {
-      setNumbers(numbers + e.target.innerHTML)
-      setTerm(term + e.target.innerHTML)
-      }
-    }
-
-    else if (e.target.className === "operators") {
-      if (operatorsArr.find(n => n === term)) {
-      setTerm(term)
-      } 
-      else if (term === "0") {
-        console.log("Target Operators - Term = 0")
-        setNumbers(numbers)
-      }
-      else if (!(operatorsArr.find(element => element === numbers[numbers.length -1]))) {
-        setNumbers(numbers + String(e.target.innerHTML))
-        setTerm(e.target.innerHTML) 
-      }
-      else {
-        setTerm("e.target.innerHTML")
-      }
-    }
-
-    else if ((operatorsArr.find(n => n === term)) && (e.target.className === "numbers")) {
-      setTerm(e.target.innerHTML)
-      setNumbers(numbers + String(e.target.innerHTML))
-    }
-    
-    else {
-    setNumbers(numbers + String(e.target.innerHTML))
-    setTerm(term + String(e.target.innerHTML))
     }
 
   }
 
-  const deleteNumbers = () => {
-    setNumbers("0")
+  const clear = () => {
+
+    setFormula("0")
     setTerm("0")
     document.getElementById("formula").style.opacity = 0;
-  }  
+
+  }
 
   useEffect(() => {
-    document.getElementById("ac").addEventListener("click", deleteNumbers)
-    return() => {
-      document.getElementById("ac").removeEventListener("click", deleteNumbers)
+
+    document.getElementById("ac").addEventListener("click", clear)
+
+    return () => {
+
+      document.getElementById("ac").removeEventListener("click", clear)
+
     }
+
   })
-  
-  
+
+
+  const getAns = (e) => {
+
+    if (!equation) {
+
+      if (!isTermOperator) {
+
+        let formulaArr = [];
+        for (let i = 0; i < formula.length; i++) {
+
+          formulaArr.push(formula[i])
+
+        }
+      
+        for (let i = 0; i < formulaArr.length; i++) {
+
+          if (formulaArr[i] === "-" && formulaArr[i + 1] === "-") {
+
+              formulaArr.splice(i, 2, "+")
+
+          }
+
+        }
+
+      const formulaEquation = formulaArr.join("")
+      
+      setFormula(`${formula} ${e.target.innerHTML} ${String(eval(formulaEquation))}`)
+      setTerm(String(eval(formulaEquation)))
+
+      setEquation(!equation)
+
+      }
+
+    }
+
+  }
+
+  useEffect(() => {
+
+    document.getElementById("equal").addEventListener("click", getAns)
+
+    return () => {
+
+      document.getElementById("equal").removeEventListener("click", getAns)
+
+    }
+
+  })
+
   return (
     <>
       <div id="container">
         <div id="calculator">
           <div id="screen">
-            <div id="formula">{numbers}</div>
-            <div id="result">{term}</div>
+            <div id="formula">{formula}</div>
+            <div id="term">{term}</div>
           </div>
-          <div id="button-wrapper">
-            <button                                             id="ac">AC</button>
-            <button onClick={addNumbers} className="operators" id="divide">/</button>
-            <button onClick={addNumbers} className="operators" id="multiply">x</button>
-            <button onClick={addNumbers} className="numbers"    id="7">7</button>
-            <button onClick={addNumbers} className="numbers"    id="8">8</button>
-            <button onClick={addNumbers} className="numbers"    id="9">9</button>
-            <button onClick={addNumbers} className="operators" id="subtract">-</button>
-            <button onClick={addNumbers} className="numbers"    id="4">4</button>
-            <button onClick={addNumbers} className="numbers"    id="5">5</button>
-            <button onClick={addNumbers} className="numbers"    id="6">6</button>
-            <button onClick={addNumbers} className="operators" id="add">+</button>
-            <button onClick={addNumbers} className="numbers"    id="1">1</button>
-            <button onClick={addNumbers} className="numbers"    id="2">2</button>
-            <button onClick={addNumbers} className="numbers"    id="3">3</button>
-            <button                                             id="equal">=</button>
-            <button onClick={addNumbers} className="numbers"    id="zero">0</button>
-            <button onClick={addNumbers} className="numbers"    id="point">.</button>
+          <div id="buttons-wrapper">
+            <button                                            id="ac">AC</button>
+            <button onClick={addDigits} className="operators"  id="divide">/</button>
+            <button onClick={addDigits} className="operators"  id="multiply">*</button>
+            <button onClick={addDigits} className="numbers"    id="7">7</button>
+            <button onClick={addDigits} className="numbers"    id="8">8</button>
+            <button onClick={addDigits} className="numbers"    id="9">9</button>
+            <button onClick={addDigits} className="operators"  id="minus">-</button>
+            <button onClick={addDigits} className="numbers"    id="4">4</button>
+            <button onClick={addDigits} className="numbers"    id="5">5</button>
+            <button onClick={addDigits} className="numbers"    id="6">6</button>
+            <button onClick={addDigits} className="operators"  id="add">+</button>
+            <button onClick={addDigits} className="numbers"    id="1">1</button>
+            <button onClick={addDigits} className="numbers"    id="2">2</button>
+            <button onClick={addDigits} className="numbers"    id="3">3</button>
+            <button                                            id="equal">=</button>
+            <button onClick={addDigits} className="numbers"    id="zero">0</button>
+            <button onClick={addDigits} className="numbers"    id="point">.</button>
           </div>
         </div>
       </div>
     </>
   );
+
 }
 
 export default App;
+

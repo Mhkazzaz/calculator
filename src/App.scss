@@ -1,49 +1,59 @@
 * {
+
     color: #F2F4F7;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 1.1rem;
     font-weight: 500;
+
 }
 
 #container {
+
     display: grid;
     width: 100vw;
     height: 100vh;
     background-color: #8DB7F1;
     justify-content: center;
     align-content: center;
+
 }
 
 #calculator {
+
     width: 300px;
     height: auto;
     background-color: #171E1C;
     padding: 10px;
+
 }
 
 #screen {
+
     padding-right: 2px;
     text-align: right;
-    // outline: 1px solid green;
     word-wrap: break-word;
 
-}
+    #formula {
 
-#formula {
-    border: 1px solid red;
-    // height: 20px;
     opacity: 0;
     font-size: 0.9rem;
     color: rgb(255, 187, 0)
+
+    }
+
+    #term {
+
+        font-size: 1.4rem;
+
+    }
+
+
 }
 
-#result {
-    border: 1px solid yellow;
-    font-size: 1.3rem;
-}
 
 
-#button-wrapper {
+#buttons-wrapper {
+
     margin-top: 10px;
     width: 300px;
     height: 350px;
@@ -55,36 +65,51 @@
     '. . . .'
     '. . . equal'
     'zero zero . equal'
+
 }
 
 button {
+
     padding: 15px 32px;
     border: 1px solid #171E1C
+
 }
 
 button:hover {
+
     color: #171E1C;
     border: 1px solid #C0C0C0
+
 }
 
 #ac {
+
     grid-area: ac;
     background-color: #D0203B;
+
 }
 
 #equal {
+
     grid-area: equal;
     background-color: #0A548F;
+
 }
 
 #zero {
+
     grid-area: zero;
+    
 }
 
 .operators {
+
     background-color: #888b8b;
+
 }
 
 .numbers {
+    
     background-color: #595959;
+
 }
