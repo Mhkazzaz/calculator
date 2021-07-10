@@ -58,14 +58,10 @@ function App() {
         setFormula(term + e.target.innerHTML)
         setTerm(e.target.innerHTML)
 
-      } else {
-
-        setTerm(0)
-        document.getElementById("formula").style.opacity = 0
-
-      }
+      } 
 
       setEquation(!equation)
+
 
     } else if (term === "0") {
 
@@ -76,23 +72,27 @@ function App() {
         setFormula(formula + ".")
         setTerm(term + ".")
 
-      } else if (e.target.className === "numbers" && e.target.id !== "zero") {
+      } else if (e.target.className === "numbers") {
+
+        if (e.target.id === "zero") {
+
+          setFormula(formula)
+          setTerm(term)
+
+        } else {
+
+          setFormula(e.target.innerHTML)
+          setTerm(e.target.innerHTML)
+
+        }
         
-        setFormula(e.target.innerHTML)
-        setTerm(e.target.innerHTML)
 
       } else if (e.target.className === "operators") {
 
         setFormula(formula + e.target.innerHTML)
         setTerm(e.target.innerHTML)
 
-      } else {
-
-        setFormula(formula)
-        setTerm(term)
-
-      }
-
+      } 
 
     } else {
 
@@ -104,7 +104,12 @@ function App() {
         }
 
         const decimalPoint = (num) => num === '.';
-        if (!termArr.some(decimalPoint)) {
+
+        if (term.length === 22) {
+
+          digitLimitMet();
+
+        } else if (!termArr.some(decimalPoint)) {
 
           setFormula(formula + e.target.innerHTML)
           setTerm(term + e.target.innerHTML)
@@ -189,11 +194,6 @@ function App() {
 
         }
 
-      } else {
-
-        setFormula(formula + e.target.innerHTML)
-        setTerm(term + e.target.innerHTML)
-
       }
 
     }
@@ -225,33 +225,67 @@ function App() {
 
     if (!equation) {
 
-      if (!isTermOperator) {
-
         let formulaArr = [];
+
         for (let i = 0; i < formula.length; i++) {
 
           formulaArr.push(formula[i])
 
         }
-      
-        for (let i = 0; i < formulaArr.length; i++) {
 
-          if (formulaArr[i] === "-" && formulaArr[i + 1] === "-") {
+        if (operatorsArr.find(operator => operator === formulaArr[formulaArr.length - 1])) {
 
-              formulaArr.splice(i, 2, "+")
+          if (operatorsArr.find(operator => operator === formulaArr[formulaArr.length - 2])) {
+
+          formulaArr.pop()
+          formulaArr.pop()
+
+          } else {
+
+            formulaArr.pop()
+
+          }  
+
+          let displayEquation = formulaArr.join("")
+          let mutableFormulaArr = [...formulaArr]
+
+
+          for (let i = 0; i < formulaArr.length; i++) {
+
+            if (formulaArr[i] === "-" && formulaArr[i + 1] === "-") {
+
+              mutableFormulaArr.splice(i, 2, "+")
+
+            }
 
           }
 
+          let formulaEquation = mutableFormulaArr.join("")
+          
+          setFormula(`${displayEquation} = ${String(eval(formulaEquation))}`)
+          setTerm(String(eval(formulaEquation)))
+           
+        } else {
+
+          for (let i = 0; i < formulaArr.length; i++) {
+
+            if (formulaArr[i] === "-" && formulaArr[i + 1] === "-") {
+
+              formulaArr.splice(i, 2, "+")
+
+            }
+
+          }
+
+          let formulaEquation = formulaArr.join("")
+
+          setFormula(`${formula} = ${String(eval(formulaEquation))}`)
+          setTerm(String(eval(formulaEquation)))
+
         }
 
-      const formulaEquation = formulaArr.join("")
       
-      setFormula(`${formula} ${e.target.innerHTML} ${String(eval(formulaEquation))}`)
-      setTerm(String(eval(formulaEquation)))
-
       setEquation(!equation)
-
-      }
 
     }
 
